@@ -1,14 +1,45 @@
 provider "aws" {
   region     = "ap-south-1"
 }
+resource "aws_security_group" "my-sg" {
+  name        = "my-security-group"
+  description = "Allow TLS inbound traffic"
+  vpc_id      = "vpc-0681f2d16344fb11a"
+
+  ingress {
+    description      = "TLS from VPC"
+    from_port        = 80
+    to_port          = 80
+    protocol         = "tcp"
+    cidr_blocks      = ["182.74.52.154/32"]
+  }
+  ingress {
+    description      = "TLS from VPC"
+    from_port        = 22
+    to_port          = 22
+    protocol         = "tcp"
+    cidr_blocks      = ["182.74.52.154/32"]
+  }
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "allow_ports"
+  }
+}
 resource "aws_instance" "Demo" {
-  ami           = "ami-0597375488017747e"
+  ami           = "ami-06984ea821ac0a879"
   instance_type = "t2.micro"
+  security_groups = aws.security_groups.my-sg.id
   key_name = "aws"
   tags = {
-    Name = "demo"
+    Name = "Demo"
   }
-  
 user_data = <<EOF
 #!/bin/bash
 echo "Copying the SSH Key Of Jenkins to the server"
@@ -18,3 +49,6 @@ EOF
 output "vmpublic_ip" {
   value = "${aws_instance.Demo.public_ip}"
 }
+
+
+
