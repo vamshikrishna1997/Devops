@@ -36,13 +36,10 @@ resource "aws_instance" "Demo" {
   ami           = "ami-06984ea821ac0a879"
   instance_type = "t2.micro"
   key_name = "aws"
+  vpc_security_group_ids = [aws_security_group.my-sg.id]
   tags = {
     Name = "Demo"
   }
-#data "aws_sg_attachment" "sg_attachment" {
-#  security_group_id    = "${aws_security_group.my-sg.id}"
-}
-  
 user_data = <<EOF
 #!/bin/bash
 echo "Copying the SSH Key Of Jenkins to the server"
