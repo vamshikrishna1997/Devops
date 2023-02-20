@@ -39,8 +39,8 @@ resource "aws_instance" "Demo" {
   tags = {
     Name = "Demo"
   }
-data "aws_sg_attachment" "sg_attachment" {
-  security_group_id    = "${aws_security_group.my-sg.id}"
+#data "aws_sg_attachment" "sg_attachment" {
+#  security_group_id    = "${aws_security_group.my-sg.id}"
 }
   
 user_data = <<EOF
