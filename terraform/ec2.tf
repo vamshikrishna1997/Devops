@@ -2,7 +2,7 @@ provider "aws" {
   region     = "ap-south-1"
 }
 resource "aws_security_group" "my-sg" {
-  name        = "my-security-group"
+  name        = "my-security-group_1"
   description = "Allow TLS inbound traffic"
   vpc_id      = "vpc-0681f2d16344fb11a"
 
