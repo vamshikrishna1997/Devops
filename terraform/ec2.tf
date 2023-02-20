@@ -35,7 +35,7 @@ resource "aws_security_group" "my-sg" {
 resource "aws_instance" "Demo" {
   ami           = "ami-06984ea821ac0a879"
   instance_type = "t2.micro"
-  security_groups = aws_security_group.my-sg.id
+  security_group = aws_security_group.my-sg.id
   key_name = "aws"
   tags = {
     Name = "Demo"
