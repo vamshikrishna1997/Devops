@@ -40,7 +40,7 @@ resource "aws_instance" "Demo" {
     Name = "Demo"
   }
 resource "aws_sg_attachment" "sg_attachment" {
-  security_group_id    = "${data.aws_security_group.sec_group.id}"
+  security_group_id    = "${data.aws_security_group.my-sg.id}"
 }
   
 user_data = <<EOF
