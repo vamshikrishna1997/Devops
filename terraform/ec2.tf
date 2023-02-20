@@ -39,7 +39,7 @@ resource "aws_instance" "Demo" {
   tags = {
     Name = "Demo"
   }
-resource "aws_sg_attachment" "sg_attachment" {
+data "aws_sg_attachment" "sg_attachment" {
   security_group_id    = "${data.aws_security_group.my-sg.id}"
 }
   
