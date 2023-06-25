@@ -1,6 +1,4 @@
-region: us-east-1
-key_name: keypair
-instance_type: t2.micro
-security_group: default
-name: ansible_target
-count: 1
+#add this in ansible config file.
+[defaults]
+remote_user = ubuntu
+private_key_file = /root/dynamic.pem
