@@ -1,0 +1,55 @@
+---
+- name: Provisioning EC2 instances using Ansible
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tags: provisioning
+  vars_files:
+    - variables.yml
+
+  tasks:
+    - name: Create my security group
+      local_action:
+        module: ec2_group
+        name: ansible
+        description: Security Group for ansible Servers
+        region: "{{ region }}"
+        rules:
+          - proto: tcp
+            from_port: 22
+            to_port: 22
+            cidr_ip: 0.0.0.0/0
+          - proto: tcp
+            from_port: 80
+            to_port: 80
+            cidr_ip: 0.0.0.0/0
+        rules_egress:
+          - proto: all
+            cidr_ip: 0.0.0.0/0
+    - name: Create instance with public IP address
+      amazon.aws.ec2_instance:
+        name: "{{ name }}"
+        key_name: "{{ key_name }}"
+        region: "{{ region }}"
+        instance_type: "{{ instance_type }}"
+        security_group: "{{ security_group }}"
+        count: "{{ count }}"
+        network:
+          assign_public_ip: true
+        image_id: ami-053b0d53c279acc90
+        tags:
+          Environment: ansible_node
+    - name: Get system information
+      shell:
+        cmd: |
+          hostname -I
+          hostname
+          cat /etc/*-release | grep VERSION_ID
+      register: system_info
+    - name: Debug system_info variable
+      debug:
+        var: system_info
+    - name: Display information
+      debug:
+        msg: "IP: {{ system_info.stdout_lines[0] }}, Hostname: {{ system_info.stdout_lines[1] }}, Version: {{ system_info.stdout_lines[2] }}"
+
