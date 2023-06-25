@@ -1,0 +1,6 @@
+region: us-east-1
+key_name: keypair
+instance_type: t2.micro
+security_group: default
+name: ansible_target
+count: 1
